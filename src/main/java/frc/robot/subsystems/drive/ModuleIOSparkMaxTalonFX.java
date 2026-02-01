@@ -14,6 +14,7 @@
 package frc.robot.subsystems.drive;
 
 import static frc.robot.subsystems.drive.DriveConstants.*;
+import static frc.robot.util.PhoenixUtil.*;
 import static frc.robot.util.SparkUtil.*;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -26,6 +27,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -33,7 +35,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
@@ -85,6 +86,7 @@ public class ModuleIOSparkMaxTalonFX implements ModuleIO {
   private final Debouncer driveConnectedDebounce = new Debouncer(0.5);
   private final Debouncer turnConnectedDebounce = new Debouncer(0.5);
 
+  @SuppressWarnings("removal")
   public ModuleIOSparkMaxTalonFX(int module) {
     zeroRotation =
         switch (module) {
@@ -164,8 +166,8 @@ public class ModuleIOSparkMaxTalonFX implements ModuleIO {
 
     // Apply TalonFX configurations
 
-    tryUntilOkTfx(5, () -> driveTalon.getConfigurator().apply(driveConfig, 0.25));
-    tryUntilOkTfx(5, () -> driveTalon.setPosition(0.0, 0.25));
+    tryUntilOk(5, () -> driveTalon.getConfigurator().apply(driveConfig, 0.25));
+    tryUntilOk(5, () -> driveTalon.setPosition(0.0, 0.25));
 
     // Configure turn motor
     var turnConfig = new SparkMaxConfig();
@@ -185,7 +187,7 @@ public class ModuleIOSparkMaxTalonFX implements ModuleIO {
         .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
         .positionWrappingEnabled(true)
         .positionWrappingInputRange(turnPIDMinInput, turnPIDMaxInput)
-        .pidf(turnKp, 0.0, turnKd, 0.0);
+        .pid(turnKp, 0.0, turnKd);
     turnConfig
         .signals
         .absoluteEncoderPositionAlwaysOn(true)
@@ -217,7 +219,7 @@ public class ModuleIOSparkMaxTalonFX implements ModuleIO {
         PhoenixOdometryThread.getInstance().registerSignal(turnSpark, turnEncoder::getPosition);
 
     // Configure periodic frames
-    BaseStatusSignal.setUpdateFrequencyForAll(Drive.ODOMETRY_FREQUENCY, drivePosition);
+    BaseStatusSignal.setUpdateFrequencyForAll(DriveConstants.odometryFrequency, drivePosition);
     BaseStatusSignal.setUpdateFrequencyForAll(50.0, driveVelocity, driveAppliedVolts, driveCurrent);
 
     ParentDevice.optimizeBusUtilizationForAll(driveTalon);
@@ -287,6 +289,6 @@ public class ModuleIOSparkMaxTalonFX implements ModuleIO {
     double setpoint =
         MathUtil.inputModulus(
             rotation.plus(zeroRotation).getRadians(), turnPIDMinInput, turnPIDMaxInput);
-    turnController.setReference(setpoint, ControlType.kPosition);
+    turnController.setSetpoint(setpoint, ControlType.kPosition);
   }
 }

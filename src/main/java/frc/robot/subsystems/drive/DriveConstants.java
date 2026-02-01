@@ -1,15 +1,9 @@
-// Copyright 2021-2025 FRC 6328
+// Copyright (c) 2021-2026 Littleton Robotics
 // http://github.com/Mechanical-Advantage
 //
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// version 3 as published by the Free Software Foundation or
-// available in the root directory of this project.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
+// Use of this source code is governed by a BSD
+// license that can be found in the LICENSE file
+// at the root directory of this project.
 
 package frc.robot.subsystems.drive;
 
@@ -23,8 +17,8 @@ import edu.wpi.first.math.util.Units;
 public class DriveConstants {
   public static final double maxSpeedMetersPerSec = 4.8;
   public static final double odometryFrequency = 100.0; // Hz
-  public static final double trackWidth = Units.inchesToMeters(25.8125);
-  public static final double wheelBase = Units.inchesToMeters(25.875);
+  public static final double trackWidth = Units.inchesToMeters(26.5);
+  public static final double wheelBase = Units.inchesToMeters(26.5);
   public static final double driveBaseRadius = Math.hypot(trackWidth / 2.0, wheelBase / 2.0);
   public static final Translation2d[] moduleTranslations =
       new Translation2d[] {
@@ -42,39 +36,39 @@ public class DriveConstants {
 
   // Device CAN IDs
 
-  public static final int frontLeftDriveCanId = 7;
-  public static final int backLeftDriveCanId = 3;
-  public static final int frontRightDriveCanId = 5;
+  public static final int frontLeftDriveCanId = 3;
+  public static final int backLeftDriveCanId = 5;
+  public static final int frontRightDriveCanId = 7;
   public static final int backRightDriveCanId = 1;
 
-  public static final int frontLeftTurnCanId = 8;
-  public static final int backLeftTurnCanId = 4;
-  public static final int frontRightTurnCanId = 6;
+  public static final int frontLeftTurnCanId = 4;
+  public static final int backLeftTurnCanId = 6;
+  public static final int frontRightTurnCanId = 8;
   public static final int backRightTurnCanId = 2;
 
   // Drive motor configuration
-  public static final boolean driveInverted = true;
   public static final int driveMotorCurrentLimit = 50;
   public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
   public static final double driveMotorReduction =
-      (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion teeth and 22 spur teeth
+      (45.0 * 22.0) / (14.0 * 15.0); // MAXSwerve with 14 pinion teeth
+  // and 22 spur teeth
   public static final DCMotor driveGearbox = DCMotor.getNeoVortex(1);
   public static final boolean driveEnableCurtentLimit = true;
+  public static final boolean driveInverted = true;
 
   public static final double slipCurrent = 120;
 
   // Drive encoder configuration
   public static final double driveEncoderPositionFactor =
-      2 * Math.PI / driveMotorReduction; // Rotor Rotations -> Wheel Radians
+      2 * Math.PI / driveMotorReduction; // Rotor Rotations ->
+  // Wheel Radians
   public static final double driveEncoderVelocityFactor =
-      (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM -> Wheel Rad/Sec
-
+      (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM ->
   public static final double odometryUpdateFrequency = 100;
-  /** After 500 seconds, the CAN times out */
-  public static final int canConfigTimeoutSec = 500;
+  // Wheel Rad/Sec
 
   // Drive PID configuration
-  public static final double driveKp = 0.9; // .0002
+  public static final double driveKp = 0.9;
   public static final double driveKi = 0.0;
   public static final double driveKd = 0.0;
   public static final double driveKs = 0.10663;
