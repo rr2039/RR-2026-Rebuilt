@@ -41,10 +41,10 @@ public class DriveConstants {
   public static final int frontRightDriveCanId = 7;
   public static final int backRightDriveCanId = 1;
 
-  public static final int frontLeftTurnCanId = 8;
-  public static final int backLeftTurnCanId = 6;
-  public static final int frontRightTurnCanId = 4;
-  public static final int backRightTurnCanId = 2;
+  public static final int frontLeftTurnCanId = 4;
+  public static final int backLeftTurnCanId = 2;
+  public static final int frontRightTurnCanId = 8;
+  public static final int backRightTurnCanId = 6;
 
   // Drive motor configuration
   public static final int driveMotorCurrentLimit = 50;
